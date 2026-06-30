@@ -6,16 +6,25 @@ if [ ! -f "sketch.rb" ]; then
 fi
 
 awk '
-# 1. Read and map require lines
-/^[[:space:]]*require[[:space:]]+/ && /#[[:space:]]*/ {
-    req_part = $0
-    sub(/[[:space:]]*#.*/, "", req_part)
-    
-    # Compatibility fix: manually match and extract
-    if (match($0, /#[[:space:]]*[A-Za-z0-9_]+/)) {
-        class_str = substr($0, RSTART, RLENGTH)
-        sub(/#[[:space:]]*/, "", class_str)
-        requires[class_str] = req_part
+# 1. Handle Requires (with or without comments)
+/^[[:space:]]*require[[:space:]]+/ {
+    if (match($0, /#[[:space:]]*/)) {
+        req_line = substr($0, 1, RSTART - 1)
+        comment_part = substr($0, RSTART + RLENGTH)
+        
+        # Split by comma
+        n = split(comment_part, classes, ",")
+        for (i = 1; i <= n; i++) {
+            # Trim whitespace
+            c = classes[i]
+            gsub(/^[[:space:]]+|[[:space:]]+$/, "", c)
+            
+            # Map the require line to this specific class
+            requires[c] = requires[c] req_line "\n"
+        }
+    } else {
+        # Regular requires go to main
+        general_requires = general_requires $0 "\n"
     }
     next
 }
