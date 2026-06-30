@@ -1,9 +1,14 @@
 ---
-:lives: 4
+:lives: 5
 :board_array:
-- s
 - _
 - _
 - _
 - _
-:correct_word: stone
+- _
+- _
+- _
+- _
+- _
+- _
+:correct_word: indication

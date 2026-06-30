@@ -1,6 +1,7 @@
 class CLI
-  def initialize(game_engine)
+  def initialize(game_engine, sg_manager: nil)
     @engine = game_engine
+    @sgm = sg_manager
   end
 
   def start_game
@@ -25,6 +26,16 @@ class CLI
 
   def process_move
     guess = read_valid
+    
+    while guess == :save_game
+      @sgm.save(@engine)
+      guess = read_valid
+    end
+
+    while guess == :load_game
+      @engine = @sgm.load(@engine)
+      guess = read_valid
+    end
 
     if @engine.check_guess(guess)
       puts "You've found a letter!"
@@ -45,7 +56,16 @@ class CLI
 
   def read_valid
     input = read_input
-    input.match?(/\A[a-z]\z/) ? input: retry_input
+    case input
+    when "save"
+      :save_game
+    when "load"
+      :load_game
+    when /\A[a-z]\z/
+      input
+    else
+      retry_input
+    end
   end
 
   def retry_input

@@ -1,5 +1,5 @@
 class GameEngine
-  attr_reader :board, :lives
+  attr_reader :board, :lives, :correct_word
 
   def initialize(correct_word)
     @correct_word = correct_word
@@ -29,5 +29,19 @@ class GameEngine
 
   def game_over?
     won? || lost?
+  end
+
+  def set_lives(int)
+    @lives = int if int.is_a?(Integer)
+  end
+
+  private
+
+  def to_h
+    {
+      lives: @lives,
+      board_array: @board.to_a,
+      correct_word: @correct_word.to_s
+    }
   end
 end

@@ -7,10 +7,18 @@ class Board
     @array.join(" ")
   end
 
+  def to_a
+    @array.dup
+  end
+
   def update_array(indexes, letter)
     indexes.each do |index|
       @array[index] = letter
     end
+  end
+
+  def restore_array(array)
+    @array = array
   end
 
   def complete?

@@ -16,4 +16,8 @@ class CorrectWord
   def length
     @word.length
   end
+
+  def to_s
+    @word
+  end
 end
