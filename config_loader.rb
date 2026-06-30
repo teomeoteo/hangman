@@ -1,4 +1,4 @@
-require 'yaml'
+require 'yaml' 
 
 class ConfigLoader
   def initialize(config_path: "config.yml")

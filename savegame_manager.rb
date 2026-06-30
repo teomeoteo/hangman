@@ -1,3 +1,5 @@
+require 'yaml' 
+
 class SavegameManager
   def save(engine)
     File.write("save.yml", YAML.dump(engine.send(:to_h)))

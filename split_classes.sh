@@ -12,18 +12,16 @@ awk '
         req_line = substr($0, 1, RSTART - 1)
         comment_part = substr($0, RSTART + RLENGTH)
         
-        # Split by comma
         n = split(comment_part, classes, ",")
         for (i = 1; i <= n; i++) {
-            # Trim whitespace
             c = classes[i]
             gsub(/^[[:space:]]+|[[:space:]]+$/, "", c)
             
-            # Map the require line to this specific class
-            requires[c] = requires[c] req_line "\n"
+            # Use assignment (=) instead of concatenation (requires[c] = requires[c] ...)
+            # to prevent piling up newlines.
+            requires[c] = req_line
         }
     } else {
-        # Regular requires go to main
         general_requires = general_requires $0 "\n"
     }
     next
