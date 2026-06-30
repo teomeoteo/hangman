@@ -1,4 +1,4 @@
-require 'yaml' # ConfigLoader
+require 'yaml' # ConfigLoader, SavegameManager
 
 class WordSelector
   def initialize(file_path:, min_length: 5)
